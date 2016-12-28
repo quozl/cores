@@ -30,6 +30,7 @@
 
 #include "kinetis.h"
 #include <avr/eeprom.h>
+#include <string.h>
 //#include "HardwareSerial.h"
 #if F_CPU > 120000000 && defined(__MK66FX1M0__)
 #include "core_pins.h"	// delayMicroseconds()
@@ -93,6 +94,10 @@
   #define EEESIZE 0x02
 #endif
 
+uint32_t eeprom_size() {
+  return EEPROM_SIZE;
+}
+
 // Writing unaligned 16 or 32 bit data is handled automatically when
 // this is defined, but at a cost of extra code size.  Without this,
 // any unaligned write will cause a hard fault exception!  If you're
@@ -138,6 +143,22 @@ void eeprom_initialize(void)
 }
 
 #define FlexRAM ((volatile uint8_t *)0x14000000)
+
+uint32_t eeprom_base()
+{
+	return 0x14000000;
+}
+
+uint32_t eeprom_length()
+{
+	uint32_t offset;
+	if (!(FTFL_FCNFG & FTFL_FCNFG_EEERDY)) eeprom_initialize();
+	if (FlexRAM[0] == 0xff) return 0; /* not initialised */
+	for(offset=0; offset<EEPROM_SIZE; offset++) {
+		if (FlexRAM[offset] == 0) break;
+	}
+	return offset;
+}
 
 uint8_t eeprom_read_byte(const uint8_t *addr)
 {

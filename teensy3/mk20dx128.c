@@ -65,7 +65,6 @@ extern unsigned long _estack;
 
 extern int main (void);
 void ResetHandler(void);
-void _init_Teensyduino_internal_(void) __attribute__((noinline));
 void __libc_init_array(void);
 
 
@@ -1094,8 +1093,6 @@ void ResetHandler(void)
 	//init_pins();
 	__enable_irq();
 
-	_init_Teensyduino_internal_();
-
 #if defined(KINETISK)
 	// RTC initialization
 	if (RTC_SR & RTC_SR_TIF) {
@@ -1105,11 +1102,10 @@ void ResetHandler(void)
 		// flag into the VBAT register file indicating the
 		// RTC is set with known-stale time and should be
 		// updated when fresh time is known.
-		#if ARDUINO >= 10600
-		rtc_set((uint32_t)&__rtc_localtime);
-		#else
-		rtc_set(TIME_T);
-		#endif
+		RTC_SR = 0;
+		RTC_TPR = 0;
+		RTC_TSR = TIME_T;
+		RTC_SR = RTC_SR_TCE;
 		*(uint32_t *)0x4003E01C = 0x5A94C3A5;
 	}
 	if ((RCM_SRS0 & RCM_SRS0_PIN) && (*(uint32_t *)0x4003E01C == 0x5A94C3A5)) {
@@ -1127,8 +1123,6 @@ void ResetHandler(void)
 		*(uint32_t *)0x4003E01C = 0;
 	}
 #endif
-
-	__libc_init_array();
 
 	startup_late_hook();
 	main();
