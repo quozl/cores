@@ -1155,6 +1155,9 @@ uint8_t shiftIn_msbFirst(uint8_t dataPin, uint8_t clockPin)
 
 
 
+// the systick interrupt is supposed to increment this at 1 kHz rate
+volatile uint32_t systick_millis_count = 0;
+
 //uint32_t systick_current, systick_count, systick_istatus;  // testing only
 
 uint32_t micros(void)
