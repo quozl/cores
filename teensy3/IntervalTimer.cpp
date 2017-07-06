@@ -1,6 +1,6 @@
 /* Teensyduino Core Library
  * http://www.pjrc.com/teensy/
- * Copyright (c) 2016 PJRC.COM, LLC.
+ * Copyright (c) 2017 PJRC.COM, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -50,6 +50,7 @@ bool IntervalTimer::beginCycles(void (*funct)(), uint32_t cycles)
 		channel->TFLG = 1;
 	} else {
 		SIM_SCGC6 |= SIM_SCGC6_PIT;
+		__asm__ volatile("nop"); // solves timing problem on Teensy 3.5
 		PIT_MCR = 1;
 		channel = KINETISK_PIT_CHANNELS;
 		while (1) {

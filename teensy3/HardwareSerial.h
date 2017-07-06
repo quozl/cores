@@ -1,6 +1,6 @@
 /* Teensyduino Core Library
  * http://www.pjrc.com/teensy/
- * Copyright (c) 2013 PJRC.COM, LLC.
+ * Copyright (c) 2017 PJRC.COM, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -239,6 +239,7 @@ void serial6_clear(void);
 class HardwareSerial : public Stream
 {
 public:
+	constexpr HardwareSerial() {}
 	virtual void begin(uint32_t baud) { serial_begin(BAUD2DIV(baud)); }
 	virtual void begin(uint32_t baud, uint32_t format) {
 					  serial_begin(BAUD2DIV(baud));
@@ -255,6 +256,7 @@ public:
 	virtual void flush(void)        { serial_flush(); }
 	virtual void clear(void)	{ serial_clear(); }
 	virtual int availableForWrite(void) { return serial_write_buffer_free(); }
+	using Print::write;
 	virtual size_t write(uint8_t c) { serial_putchar(c); return 1; }
 	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
 	virtual size_t write(long n)            { return write((uint8_t)n); }
@@ -274,6 +276,7 @@ extern void serialEvent1(void);
 class HardwareSerial2 : public HardwareSerial
 {
 public:
+	constexpr HardwareSerial2() {}
 	virtual void begin(uint32_t baud) { serial2_begin(BAUD2DIV2(baud)); }
 	virtual void begin(uint32_t baud, uint32_t format) {
 					  serial2_begin(BAUD2DIV2(baud));
@@ -290,6 +293,7 @@ public:
 	virtual void flush(void)        { serial2_flush(); }
 	virtual void clear(void)	{ serial2_clear(); }
 	virtual int availableForWrite(void) { return serial2_write_buffer_free(); }
+	using Print::write;
 	virtual size_t write(uint8_t c) { serial2_putchar(c); return 1; }
 	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
 	virtual size_t write(long n)            { return write((uint8_t)n); }
@@ -309,6 +313,7 @@ extern void serialEvent2(void);
 class HardwareSerial3 : public HardwareSerial
 {
 public:
+	constexpr HardwareSerial3() {}
 	virtual void begin(uint32_t baud) { serial3_begin(BAUD2DIV3(baud)); }
 	virtual void begin(uint32_t baud, uint32_t format) {
 					  serial3_begin(BAUD2DIV3(baud));
@@ -325,6 +330,7 @@ public:
 	virtual void flush(void)        { serial3_flush(); }
 	virtual void clear(void)	{ serial3_clear(); }
 	virtual int availableForWrite(void) { return serial3_write_buffer_free(); }
+	using Print::write;
 	virtual size_t write(uint8_t c) { serial3_putchar(c); return 1; }
 	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
 	virtual size_t write(long n)            { return write((uint8_t)n); }
@@ -344,6 +350,7 @@ extern void serialEvent3(void);
 class HardwareSerial4 : public HardwareSerial
 {
 public:
+	constexpr HardwareSerial4() {}
 	virtual void begin(uint32_t baud) { serial4_begin(BAUD2DIV3(baud)); }
 	virtual void begin(uint32_t baud, uint32_t format) {
 					  serial4_begin(BAUD2DIV3(baud));
@@ -360,6 +367,7 @@ public:
 	virtual void flush(void)        { serial4_flush(); }
 	virtual void clear(void)	{ serial4_clear(); }
 	virtual int availableForWrite(void) { return serial4_write_buffer_free(); }
+	using Print::write;
 	virtual size_t write(uint8_t c) { serial4_putchar(c); return 1; }
 	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
 	virtual size_t write(long n)            { return write((uint8_t)n); }
@@ -379,6 +387,7 @@ extern void serialEvent4(void);
 class HardwareSerial5 : public HardwareSerial
 {
 public:
+	constexpr HardwareSerial5() {}
 	virtual void begin(uint32_t baud) { serial5_begin(BAUD2DIV3(baud)); }
 	virtual void begin(uint32_t baud, uint32_t format) {
 					  serial5_begin(BAUD2DIV3(baud));
@@ -395,6 +404,7 @@ public:
 	virtual void flush(void)        { serial5_flush(); }
 	virtual void clear(void)	{ serial5_clear(); }
 	virtual int availableForWrite(void) { return serial5_write_buffer_free(); }
+	using Print::write;
 	virtual size_t write(uint8_t c) { serial5_putchar(c); return 1; }
 	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
 	virtual size_t write(long n)            { return write((uint8_t)n); }
@@ -414,6 +424,7 @@ extern void serialEvent5(void);
 class HardwareSerial6 : public HardwareSerial
 {
 public:
+	constexpr HardwareSerial6() {}
 #if defined(__MK66FX1M0__)	// For LPUART just pass baud straight in. 
 	virtual void begin(uint32_t baud) { serial6_begin(baud); }
 	virtual void begin(uint32_t baud, uint32_t format) {
@@ -437,6 +448,7 @@ public:
 	virtual void flush(void)        { serial6_flush(); }
 	virtual void clear(void)	{ serial6_clear(); }
 	virtual int availableForWrite(void) { return serial6_write_buffer_free(); }
+	using Print::write;
 	virtual size_t write(uint8_t c) { serial6_putchar(c); return 1; }
 	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
 	virtual size_t write(long n)            { return write((uint8_t)n); }
